@@ -1,1 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Crust & Crumb | Artisan Bakery</title>
+    <!-- Google Fonts for warm, bakery-style typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #FDF8F0;  /* warm cream background */
+            font-family: 'Inter', sans-serif;
+            color: #2E241F;
+            line-height: 1.4;
+        }
+
+        /* custom scroll */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1E7DC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C47E5A;
+            border-radius: 12px;
+        }
+
+        /* entire container */
+        .bakery-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.8rem 2rem 3rem;
+        }
+
+        /* header & branding */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed #E7D6C2;
+        }
+        .bakery-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #9E5E3A, #D48C5B);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.02);
+        }
+        .tagline {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #B57C48;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        .hero-sub {
+            font-size: 1rem;
+            color: #5E3F2E;
+            max-width: 550px;
+            margin: 1rem auto 0;
+            font-weight: 400;
+            background: #FFF7EF;
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        /* cookie grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0 2rem;
+        }
+
+        /* cookie card */
+        .cookie-card {
+            background: #FFFFFF;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -12px rgba(70, 40, 20, 0.12);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(0px);
+            border: 1px solid #F6E9DE;
+        }
+        .cookie-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 36px -16px rgba(100, 55, 28, 0.2);
+        }
+
+        .card-img {
+            height: 220px;
+            background-size: cover;
+            background-position: center 55%;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+        }
+        /* decorative badge overlay */
+        .price-badge {
+            background: rgba(46, 36, 31, 0.75);
+            backdrop-filter: blur(6px);
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #FFEFE0;
+            margin: 0 0 16px 20px;
+            letter-spacing: -0.2px;
+            font-family: 'Inter', monospace;
+        }
+        .price-badge span {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: normal;
+        }
+
+        .card-content {
+            padding: 1.6rem 1.5rem 1.8rem;
+        }
+        .cookie-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3A261E;
+            line-height: 1.2;
+            margin-bottom: 0.35rem;
+        }
+        .cookie-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #C36F3A;
+            display: inline-block;
+            margin: 0.4rem 0 0.6rem;
+            letter-spacing: -0.3px;
+        }
+        .cookie-price small {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #9B6E50;
+        }
+        .cookie-desc {
+            color: #6C4F3A;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin: 0.5rem 0 1rem;
+            border-left: 3px solid #EEDCCB;
+            padding-left: 12px;
+        }
+        .order-qty {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.2rem 0 0.8rem;
+            flex-wrap: wrap;
+        }
+        .qty-control {
+            display: flex;
+            align-items: center;
+            background: #F9F1E9;
+            border-radius: 48px;
+            overflow: hidden;
+            border: 1px solid #EADBCE;
+        }
+        .qty-btn {
+            background: #FFFFFF;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            color: #9E5E3A;
+            transition: 0.1s;
+            font-family: monospace;
+        }
+        .qty-btn:hover {
+            background: #F1E2D6;
+            color: #723d1f;
+        }
+        .qty-input {
+            width: 48px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            background: transparent;
+            border: none;
+            font-family: 'Inter', monospace;
+            color: #2E241F;
+            pointer-events: none;
+        }
+        .add-to-cart {
+            background: #2E241F;
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            letter-spacing: 0.3px;
+        }
+        .add-to-cart:hover {
+            background: #C36F3A;
+            transform: scale(0.97);
+            gap: 10px;
+        }
+        .add-to-cart i {
+            font-size: 0.9rem;
+        }
+
+        /* shopping cart section */
+        .cart-panel {
+            background: #FFFFFFE6;
+            backdrop-filter: blur(2px);
+            margin: 2.5rem 0 1.5rem;
+            border-radius: 40px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            border: 1px solid #F2E3D6;
+        }
+        .cart-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px dotted #EEDCCB;
+            padding-bottom: 0.6rem;
+        }
+        .cart-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #5A3D2C;
+        }
+        .cart-header h2 i {
+            font-size: 1.5rem;
+            color: #C36F3A;
+            margin-right: 8px;
+        }
+        #clearCart {
+            background: none;
+            border: none;
+            color: #B2805E;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #clearCart:hover {
+            color: #C33C1E;
+            text-decoration: underline;
+        }
+        .cart-items-list {
+            list-style: none;
+            max-height: 260px;
+            overflow-y: auto;
+            margin-bottom: 1.2rem;
+            padding-right: 6px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #F2E2D4;
+            font-size: 0.95rem;
+        }
+        .cart-item-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cart-item-name i {
+            color: #DFA66D;
+            width: 22px;
+        }
+        .cart-item-details {
+            display: flex;
+            gap: 18px;
+            align-items: baseline;
+        }
+        .cart-item-qty {
+            background: #F9EFE6;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+        }
+        .cart-item-price {
+            font-weight: 600;
+            min-width: 70px;
+            text-align: right;
+            color: #3A261E;
+        }
+        .remove-item {
+            background: none;
+            border: none;
+            color: #BB7E5A;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.1s;
+            margin-left: 6px;
+        }
+        .remove-item:hover {
+            color: #d9534f;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-top: 0.6rem;
+            padding-top: 0.8rem;
+            border-top: 2px solid #EADBCE;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-amount {
+            color: #C36F3A;
+            font-size: 1.7rem;
+            font-family: monospace;
+        }
+        .checkout-btn {
+            background: #D68B54;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .checkout-btn:hover {
+            background: #B55D2E;
+            transform: scale(0.98);
+        }
+
+        /* empty cart state */
+        .empty-cart-msg {
+            text-align: center;
+            padding: 1.4rem;
+            color: #B28B6F;
+            font-style: italic;
+        }
+
+        /* footer / freshness */
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #B78D6B;
+            border-top: 1px solid #EBDBCB;
+            padding-top: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* responsiveness */
+        @media (max-width: 680px) {
+            .bakery-wrapper {
+                padding: 1rem 1.2rem 2rem;
+            }
+            .bakery-logo {
+                font-size: 2.4rem;
+            }
+            .cookie-name {
+                font-size: 1.5rem;
+            }
+            .cart-panel {
+                padding: 1rem;
+            }
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+<div class="bakery-wrapper">
+    <div class="hero">
+        <div class="bakery-logo">CRUST & CRUMB</div>
+        <div class="tagline">✦ ARTISAN BAKERY & CONFECTIONERY ✦</div>
+        <div class="hero-sub">Freshly baked daily • Premium ingredients • Warmth in every bite</div>
+    </div>
+
+    <!-- cookie menu grid based on provided info: Nutella 400 each, M&Ms 200 each, Choc Chip 300 each -->
+    <div class="menu-grid" id="menuGrid"></div>
+
+    <!-- shopping cart -->
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-bag"></i> Your basket</h2>
+            <button id="clearCart" class="clear-btn"><i class="fas fa-trash-alt"></i> Clear cart</button>
+        </div>
+        <div id="cartItemsContainer">
+            <!-- dynamic cart list -->
+            <div class="empty-cart-msg">🍪 Your cart is empty — add some cookie magic!</div>
+        </div>
+        <div class="cart-total" id="cartTotalArea" style="display: none;">
+            <span>Total</span>
+            <span class="total-amount" id="cartTotalAmount">0</span>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 0.8rem;" id="checkoutBtnWrapper">
+            <button class="checkout-btn" id="checkoutBtn"><i class="fas fa-credit-card"></i> Checkout</button>
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="fas fa-cookie-bite"></i> Crust & Crumb — where every cookie tells a story. <br> 
+        Prices per cookie (tax included). Fresh from our oven to your heart.
+    </div>
+</div>
+
+<script>
+    // ----- Menu Data (exactly from description)
+    const COOKIES = [
+        {
+            id: "nutella",
+            name: "Nutella Cookies",
+            price: 400,
+            currency: "₱",
+            description: "Decadent hazelnut cocoa spread folded into a buttery, soft-centered cookie. Melty, rich, and irresistible.",
+            imgLabel: "🍫🌰",
+            imgBg: "linear-gradient(125deg, #5E2C1C, #9B4B2C), url('https://placehold.co/600x400/EEE3D8/8B5A3B?text=Nutella+Crush')",
+            icon: "fa-chocolate-bar"
+        },
+        {
+            id: "mms",
+            name: "M&M's Cookies",
+            price: 200,
+            currency: "₱",
+            description: "Chewy vanilla dough packed with rainbow M&M's — crunchy candy shell meets soft, buttery cookie.",
+            imgLabel: "🌈🍪",
+            imgBg: "linear-gradient(115deg, #F5E3D2, #FFE2C4), url('https://placehold.co/600x400/F9EDE0/A56E42?text=Colorful+Crunchie')",
+            icon: "fa-candy-cane"
+        },
+        {
+            id: "chocchip",
+            name: "Chocolate Chip Cookie",
+            price: 300,
+            currency: "₱",
+            description: "Classic dark chocolate chunk cookie, crispy edges, gooey center. A timeless bakery favorite.",
+            imgLabel: "🍫🍪",
+            imgBg: "linear-gradient(130deg, #EFD9C6, #FCEBD9), url('https://placehold.co/600x400/DCC9B4/855B3E?text=Chocolate+Bliss')",
+            icon: "fa-cookie"
+        }
+    ];
+
+    // Cart state: { id, name, price, quantity }
+    let cart = [];
+
+    // Helper: save cart to localStorage (optional but nice)
+    function saveCart() {
+        localStorage.setItem("crustCrumbCart", JSON.stringify(cart));
+    }
+    function loadCart() {
+        const stored = localStorage.getItem("crustCrumbCart");
+        if(stored) {
+            try {
+                cart = JSON.parse(stored);
+                // ensure each item has valid numeric quantity >0
+                cart = cart.filter(item => item && item.quantity > 0);
+                renderCart();
+            } catch(e) { cart = []; }
+        } else {
+            cart = [];
+        }
+        renderCart();
+    }
+
+    // render cart UI
+    function renderCart() {
+        const cartContainer = document.getElementById("cartItemsContainer");
+        const totalArea = document.getElementById("cartTotalArea");
+        const totalSpan = document.getElementById("cartTotalAmount");
+        if(!cartContainer) return;
+
+        if(cart.length === 0) {
+            cartContainer.innerHTML = `<div class="empty-cart-msg"><i class="fas fa-heart" style="color:#D48C5B;"></i> Your cart is empty — add some cookie magic!</div>`;
+            if(totalArea) totalArea.style.display = "none";
+            return;
+        }
+
+        let total = 0;
+        const itemsHtml = cart.map((item, idx) => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            return `
+                <li class="cart-item" data-cart-index="${idx}">
+                    <div class="cart-item-name">
+                        <i class="fas ${COOKIES.find(c => c.id === item.id)?.icon || 'fa-cookie'}"></i>
+                        ${item.name}
+                    </div>
+                    <div class="cart-item-details">
+                        <span class="cart-item-qty">Qty: ${item.quantity}</span>
+                        <span class="cart-item-price">₱${itemTotal.toLocaleString()}</span>
+                        <button class="remove-item" data-id="${item.id}" title="Remove one"><i class="fas fa-minus-circle"></i></button>
+                        <button class="remove-all-item" data-id="${item.id}" title="Remove all" style="background:none; border:none; color:#BB7E5A; cursor:pointer; margin-left:2px;"><i class="fas fa-trash-alt fa-xs"></i></button>
+                    </div>
+                </li>
+            `;
+        }).join('');
+
+        cartContainer.innerHTML = `<ul class="cart-items-list" style="list-style:none;">${itemsHtml}</ul>`;
+        if(totalArea) totalArea.style.display = "flex";
+        if(totalSpan) totalSpan.innerText = `₱${total.toLocaleString()}`;
+
+        // attach remove listeners (single remove / remove all)
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const cookieId = btn.getAttribute('data-id');
+                removeOneFromCart(cookieId);
+            });
+        });
+        document.querySelectorAll('.remove-all-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const cookieId = btn.getAttribute('data-id');
+                removeEntireItem(cookieId);
+            });
+        });
+        saveCart();
+    }
+
+    // remove one unit from cart
+    function removeOneFromCart(cookieId) {
+        const existing = cart.find(item => item.id === cookieId);
+        if(!existing) return;
+        if(existing.quantity === 1) {
+            cart = cart.filter(item => item.id !== cookieId);
+        } else {
+            existing.quantity -= 1;
+        }
+        renderCart();
+        saveCart();
+        updateAllQuantityInputs(); // sync quantity inputs on cards
+    }
+
+    function removeEntireItem(cookieId) {
+        cart = cart.filter(item => item.id !== cookieId);
+        renderCart();
+        saveCart();
+        updateAllQuantityInputs();
+    }
+
+    // add item to cart (quantity parameter)
+    function addToCart(cookieId, quantity) {
+        if(quantity <= 0) return;
+        const cookie = COOKIES.find(c => c.id === cookieId);
+        if(!cookie) return;
+        const existing = cart.find(item => item.id === cookieId);
+        if(existing) {
+            existing.quantity += quantity;
+        } else {
+            cart.push({
+                id: cookie.id,
+                name: cookie.name,
+                price: cookie.price,
+                quantity: quantity
+            });
+        }
+        renderCart();
+        saveCart();
+        // small animation / feedback
+        showAddedToast(cookie.name);
+    }
+
+    function showAddedToast(name) {
+        // non-intrusive feedback
+        const msgDiv = document.createElement('div');
+        msgDiv.innerText = `🍪 +${name} added to basket!`;
+        msgDiv.style.position = 'fixed';
+        msgDiv.style.bottom = '20px';
+        msgDiv.style.right = '20px';
+        msgDiv.style.backgroundColor = '#2E241F';
+        msgDiv.style.color = '#FFECD9';
+        msgDiv.style.padding = '10px 20px';
+        msgDiv.style.borderRadius = '40px';
+        msgDiv.style.fontWeight = '500';
+        msgDiv.style.fontSize = '0.85rem';
+        msgDiv.style.zIndex = '999';
+        msgDiv.style.boxShadow = '0 6px 14px rgba(0,0,0,0.1)';
+        msgDiv.style.backdropFilter = 'blur(4px)';
+        document.body.appendChild(msgDiv);
+        setTimeout(() => {
+            msgDiv.style.opacity = '0';
+            setTimeout(() => msgDiv.remove(), 500);
+        }, 1800);
+    }
+
+    // update quantity inputs on cards to reflect current cart quantity (so user sees current amount)
+    function updateAllQuantityInputs() {
+        COOKIES.forEach(cookie => {
+            const cartItem = cart.find(item => item.id === cookie.id);
+            const qtyDisplay = document.getElementById(`qty-val-${cookie.id}`);
+            if(qtyDisplay) {
+                qtyDisplay.value = cartItem ? cartItem.quantity : 0;
+            }
+        });
+    }
+
+    // clear entire cart
+    function clearCart() {
+        cart = [];
+        renderCart();
+        saveCart();
+        updateAllQuantityInputs();
+    }
+
+    // checkout simulation
+    function checkout() {
+        if(cart.length === 0) {
+            alert("🛒 Your basket is empty! Add some delicious cookies before checkout.");
+            return;
+        }
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        alert(`🧾 Thank you for ordering from Crust & Crumb!\n\n🍪 Items: ${itemCount} cookies\n💰 Total: ₱${total.toLocaleString()}\n✨ Your treats will be ready for pickup in 20 min. ✨`);
+        // optional: clear cart after order? we'll keep for demo but user may want to reset. we ask
+        if(confirm("Would you like to clear your cart after order?")) {
+            clearCart();
+        } else {
+            // just a nice message – keep cart but maybe not clear
+        }
+    }
+
+    // generate dynamic menu cards
+    function buildMenu() {
+        const menuContainer = document.getElementById("menuGrid");
+        if(!menuContainer) return;
+        
+        menuContainer.innerHTML = COOKIES.map(cookie => {
+            // price display: from data (400,200,300)
+            const priceFormatted = `${cookie.currency}${cookie.price.toLocaleString()}`;
+            // choose background fallback with overlay gradient + demo image feel using placeholder patterns
+            // but to keep design rich I will use a subtle pattern gradient and an emoji overlay.
+            let bgStyle = "";
+            if(cookie.id === "nutella") bgStyle = "linear-gradient(102deg, #5D3522, #A46439), url('https://placehold.co/600x400/7C442A/D9B48B?text=🍫+Nutella+Delight')";
+            else if(cookie.id === "mms") bgStyle = "linear-gradient(112deg, #F2D9BE, #F7C59F), url('https://placehold.co/600x400/F0D5B6/B96F3C?text=🌈+M%26M+Cookie')";
+            else bgStyle = "linear-gradient(128deg, #EED7C2, #F0DBC8), url('https://placehold.co/600x400/DDB78E/935E38?text=🍪+Chunky+Chip')";
+            
+            return `
+                <div class="cookie-card" data-id="${cookie.id}">
+                    <div class="card-img" style="background: ${bgStyle}; background-size: cover; background-blend-mode: overlay; background-position: center; background-repeat: no-repeat;">
+                        <div class="price-badge">
+                            ${cookie.imgLabel} &nbsp; ${priceFormatted} <span>each</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="cookie-name">${cookie.name}</div>
+                        <div class="cookie-price">${priceFormatted}<small> / cookie</small></div>
+                        <div class="cookie-desc">${cookie.description}</div>
+                        <div class="order-qty">
+                            <div class="qty-control">
+                                <button class="qty-btn decrement" data-id="${cookie.id}">−</button>
+                                <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
+                                <button class="qty-btn increment" data-id="${cookie.id}">+</button>
+                            </div>
+                            <button class="add-to-cart" data-id="${cookie.id}" data-name="${cookie.name}" data-price="${cookie.price}">
+                                <i class="fas fa-cart-plus"></i> Add to cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // attach event handlers for each cookie's increment, decrement, and add
+        COOKIES.forEach(cookie => {
+            const incBtn = document.querySelector(`.increment[data-id="${cookie.id}"]`);
+            const decBtn = document.querySelector(`.decrement[data-id="${cookie.id}"]`);
+            const addBtn = document.querySelector(`.add-to-cart[data-id="${cookie.id}"]`);
+            const qtyInput = document.getElementById(`qty-val-${cookie.id}`);
+            
+            let currentQty = 0;
+            const updateQtyDisplay = () => {
+                if(qtyInput) qtyInput.value = currentQty;
+            };
+            
+            if(incBtn) {
+                incBtn.addEventListener('click', () => {
+                    currentQty++;
+                    updateQtyDisplay();
+                });
+            }
+            if(decBtn) {
+                decBtn.addEventListener('click', () => {
+                    if(currentQty > 0) currentQty--;
+                    updateQtyDisplay();
+                });
+            }
+            if(addBtn) {
+                addBtn.addEventListener('click', () => {
+                    if(currentQty > 0) {
+                        addToCart(cookie.id, currentQty);
+                        // after adding we reset quantity to 0 (optional better UX)
+                        currentQty = 0;
+                        updateQtyDisplay();
+                    } else {
+                        alert(`Please select at least 1 ${cookie.name} to add.`);
+                    }
+                });
+            }
+            // sync initial from possible existing cart values
+            const existingCartItem = cart.find(item => item.id === cookie.id);
+            if(existingCartItem) currentQty = 0; // we don't reflect cart quantity on the selector, but we just set 0 initially
+            updateQtyDisplay();
+        });
+        // also sync with cart
+        updateAllQuantityInputs();
+    }
+
+    // DOM ready
+    document.addEventListener("DOMContentLoaded", () => {
+        loadCart(); // loads cart from storage and renders
+        buildMenu(); // builds menu + attaches local increment logic
+        const clearCartBtn = document.getElementById("clearCart");
+        if(clearCartBtn) clearCartBtn.addEventListener("click", () => clearCart());
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        if(checkoutBtn) checkoutBtn.addEventListener("click", () => checkout());
+        // after build menu, sync quantity inputs again to reflect cart quantities.
+        updateAllQuantityInputs();
+    });
+</script>
+</body>
+</html>
