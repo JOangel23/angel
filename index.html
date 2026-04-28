@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* custom cookie cursor */
+            cursor: none;
         }
 
         body {
@@ -65,17 +65,10 @@
         .flying-item:nth-child(9) { animation-duration: 2.2s; animation-delay: 0.1s; }
         .flying-item:nth-child(10) { animation-duration: 3.3s; animation-delay: 1.8s; }
 
-        /* custom cookie style for moving objects */
-        .fly-cookie {
-            font-size: 48px;
-            display: inline-block;
-        }
-        .fly-milk {
-            font-size: 52px;
-            display: inline-block;
-        }
+        .fly-cookie { font-size: 48px; display: inline-block; }
+        .fly-milk { font-size: 52px; display: inline-block; }
 
-        /* Custom cursor (cookie with bite) */
+        /* Custom cursor */
         .custom-cursor {
             position: fixed;
             width: 38px;
@@ -95,7 +88,7 @@
             filter: drop-shadow(0 6px 14px rgba(195, 111, 58, 0.5));
         }
 
-        /* main content wrapper - elevated above flying items */
+        /* main content */
         .bakery-wrapper {
             max-width: 1280px;
             margin: 0 auto;
@@ -107,7 +100,6 @@
             border-radius: 0 0 48px 48px;
         }
 
-        /* header animation */
         .hero {
             text-align: center;
             margin-bottom: 3rem;
@@ -147,7 +139,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* cookie grid */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -162,7 +153,6 @@
             box-shadow: 0 20px 35px -10px rgba(70, 40, 20, 0.15);
             transition: all 0.3s ease;
             border: 1px solid #F7E8DB;
-            transform: translateY(0);
             animation: cardRise 0.5s ease forwards;
             opacity: 0;
             transform: translateY(25px);
@@ -266,7 +256,6 @@
             gap: 12px;
         }
 
-        /* cart panel */
         .cart-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(6px);
@@ -340,7 +329,7 @@
             border-top: 1px solid #F0E0D0;
             padding-top: 1.2rem;
         }
-        /* modal styles (keep minimal) */
+
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -412,39 +401,18 @@
 </head>
 <body>
 
-<!-- FLYING COOKIES & MILK (moving very fast) -->
-<div class="flying-item" style="top: 15%; left: 10%;">
-    <div class="fly-cookie">🍪</div>
-</div>
-<div class="flying-item" style="top: 70%; left: 80%;">
-    <div class="fly-milk">🥛</div>
-</div>
-<div class="flying-item" style="top: 40%; left: 30%;">
-    <div class="fly-cookie">🍪</div>
-</div>
-<div class="flying-item" style="top: 85%; left: 15%;">
-    <div class="fly-milk">🥛</div>
-</div>
-<div class="flying-item" style="top: 20%; left: 85%;">
-    <div class="fly-cookie">🍪</div>
-</div>
-<div class="flying-item" style="top: 55%; left: 55%;">
-    <div class="fly-milk">🥛</div>
-</div>
-<div class="flying-item" style="top: 10%; left: 45%;">
-    <div class="fly-cookie">🍪</div>
-</div>
-<div class="flying-item" style="top: 90%; left: 65%;">
-    <div class="fly-milk">🥛</div>
-</div>
-<div class="flying-item" style="top: 30%; left: 70%;">
-    <div class="fly-cookie">🍪</div>
-</div>
-<div class="flying-item" style="top: 60%; left: 20%;">
-    <div class="fly-milk">🥛</div>
-</div>
+<!-- FLYING COOKIES & MILK -->
+<div class="flying-item" style="top: 15%; left: 10%;"><div class="fly-cookie">🍪</div></div>
+<div class="flying-item" style="top: 70%; left: 80%;"><div class="fly-milk">🥛</div></div>
+<div class="flying-item" style="top: 40%; left: 30%;"><div class="fly-cookie">🍪</div></div>
+<div class="flying-item" style="top: 85%; left: 15%;"><div class="fly-milk">🥛</div></div>
+<div class="flying-item" style="top: 20%; left: 85%;"><div class="fly-cookie">🍪</div></div>
+<div class="flying-item" style="top: 55%; left: 55%;"><div class="fly-milk">🥛</div></div>
+<div class="flying-item" style="top: 10%; left: 45%;"><div class="fly-cookie">🍪</div></div>
+<div class="flying-item" style="top: 90%; left: 65%;"><div class="fly-milk">🥛</div></div>
+<div class="flying-item" style="top: 30%; left: 70%;"><div class="fly-cookie">🍪</div></div>
+<div class="flying-item" style="top: 60%; left: 20%;"><div class="fly-milk">🥛</div></div>
 
-<!-- Custom Cursor -->
 <div class="custom-cursor" id="cookieCursor"></div>
 
 <div class="bakery-wrapper">
@@ -456,7 +424,6 @@
 
     <div class="menu-grid" id="menuGrid"></div>
 
-    <!-- Cart Panel -->
     <div class="cart-panel">
         <div class="cart-header">
             <h2><i class="fas fa-shopping-bag"></i> Your basket</h2>
@@ -496,11 +463,38 @@
 </div>
 
 <script>
-    // Menu Data with specific images (Nutella, M&Ms, Choc Chip)
+    // ========== MENU DATA ==========
+    // - Nutella: uses nutellastuffedcookies-4.jpg
+    // - M&M's: photo REMOVED (now uses stylish gradient + icon)
+    // - Chocolate Chip: PHOTO REMOVED from its own, but gets the "download.jpg" assigned as requested ("add it to chocolate cookie")
     const COOKIES = [
-        { id: "nutella", name: "Nutella Cookies", price: 400, desc: "Gooey Nutella center · crackly top", img: "nutellastuffedcookies-4.jpg", fallback: "fa-chocolate-bar" },
-        { id: "mms", name: "M&M's Cookies", price: 200, desc: "Rainbow candy crunch · chewy vanilla", img: "download.jpg", fallback: "fa-candy-cane" },
-        { id: "chocchip", name: "Chocolate Chip Cookie", price: 300, desc: "Dark chocolate chunks · golden edges", img: "https://images.pexels.com/photos/7613563/pexels-photo-7613563.jpeg?auto=compress&cs=tinysrgb&w=700", fallback: "fa-cookie" }
+        { 
+            id: "nutella", 
+            name: "Nutella Cookies", 
+            price: 400, 
+            desc: "Gooey Nutella center · crackly top, pure bliss.", 
+            img: "nutellastuffedcookies-4.jpg", 
+            fallback: "fa-chocolate-bar",
+            useImage: true
+        },
+        { 
+            id: "mms", 
+            name: "M&M's Cookies", 
+            price: 200, 
+            desc: "Rainbow candy crunch · chewy vanilla dough, colorful magic.", 
+            img: "",  // REMOVED photo
+            fallback: "fa-candy-cane",
+            useImage: false
+        },
+        { 
+            id: "chocchip", 
+            name: "Chocolate Chip Cookie", 
+            price: 300, 
+            desc: "Classic dark chocolate chunks · golden edges, melty center.", 
+            img: "download.jpg",  // ADDED download.jpg to chocolate cookie as requested
+            fallback: "fa-cookie",
+            useImage: true
+        }
     ];
 
     let cart = [];
@@ -543,7 +537,6 @@
         container.innerHTML = itemsHTML;
         totalSpan.innerText = `₱${total.toLocaleString()}`;
         totalDiv.style.display = "flex";
-        // attach remove events
         document.querySelectorAll('.removeOne').forEach(btn => btn.addEventListener('click', (e) => modifyCart(btn.dataset.id, false)));
         document.querySelectorAll('.removeAll').forEach(btn => btn.addEventListener('click', (e) => modifyCart(btn.dataset.id, true)));
         saveCart();
@@ -598,28 +591,60 @@
 
     function buildMenu() {
         const grid = document.getElementById("menuGrid");
-        grid.innerHTML = COOKIES.map(cookie => `
-            <div class="cookie-card">
-                <div class="card-img" style="background-image: url('${cookie.img}'); background-size: cover; background-position: center;">
-                    <div class="price-badge">🍪 ₱${cookie.price}</div>
-                </div>
-                <div class="card-content">
-                    <div class="cookie-name">${cookie.name}</div>
-                    <div class="cookie-price">₱${cookie.price}<small> / each</small></div>
-                    <div class="cookie-desc">${cookie.desc}</div>
-                    <div class="order-qty">
-                        <div class="qty-control">
-                            <button class="qty-btn decr" data-id="${cookie.id}">−</button>
-                            <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
-                            <button class="qty-btn incr" data-id="${cookie.id}">+</button>
+        grid.innerHTML = COOKIES.map(cookie => {
+            // For M&M's, we remove the photo entirely and show a custom gradient card with icon.
+            if(cookie.id === "mms") {
+                return `
+                    <div class="cookie-card">
+                        <div class="card-img" style="background: linear-gradient(125deg, #FEEDDE, #FCE4D0); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                            <i class="fas ${cookie.fallback}" style="font-size: 4rem; color: #D48C5B; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));"></i>
+                            <div style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 4px 12px; border-radius: 40px; margin-top: 12px; color: white; font-size: 0.8rem;">${cookie.name}</div>
+                            <div class="price-badge" style="position: absolute; bottom: 16px; right: 16px;">🍪 ₱${cookie.price}</div>
                         </div>
-                        <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add</button>
+                        <div class="card-content">
+                            <div class="cookie-name">${cookie.name}</div>
+                            <div class="cookie-price">₱${cookie.price}<small> / each</small></div>
+                            <div class="cookie-desc">${cookie.desc}</div>
+                            <div class="order-qty">
+                                <div class="qty-control">
+                                    <button class="qty-btn decr" data-id="${cookie.id}">−</button>
+                                    <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
+                                    <button class="qty-btn incr" data-id="${cookie.id}">+</button>
+                                </div>
+                                <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `).join('');
+                `;
+            } else {
+                // For Nutella and Chocolate Chip (now with download.jpg for choc chip)
+                const imageUrl = cookie.img && cookie.img !== "" ? cookie.img : "";
+                const bgStyle = imageUrl ? `background-image: url('${imageUrl}'); background-size: cover; background-position: center;` : `background: linear-gradient(135deg, #F7E3D2, #FBEBDC); display: flex; align-items: center; justify-content: center;`;
+                const innerContent = imageUrl ? `<div class="price-badge">🍪 ₱${cookie.price}</div>` : `<i class="fas ${cookie.fallback}" style="font-size: 4rem; color: #D48C5B;"></i><div class="price-badge" style="position: absolute; bottom: 16px; right: 16px;">🍪 ₱${cookie.price}</div>`;
+                return `
+                    <div class="cookie-card">
+                        <div class="card-img" style="${bgStyle}">
+                            ${innerContent}
+                        </div>
+                        <div class="card-content">
+                            <div class="cookie-name">${cookie.name}</div>
+                            <div class="cookie-price">₱${cookie.price}<small> / each</small></div>
+                            <div class="cookie-desc">${cookie.desc}</div>
+                            <div class="order-qty">
+                                <div class="qty-control">
+                                    <button class="qty-btn decr" data-id="${cookie.id}">−</button>
+                                    <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
+                                    <button class="qty-btn incr" data-id="${cookie.id}">+</button>
+                                </div>
+                                <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('');
 
-        // local qty management
+        // attach quantity controls for all
         COOKIES.forEach(cookie => {
             let localQty = 0;
             const inc = document.querySelector(`.incr[data-id="${cookie.id}"]`);
@@ -632,32 +657,35 @@
             addBtn?.addEventListener('click', () => { if(localQty>0) { addToCart(cookie.id, localQty); localQty=0; updateUI(); } else showFlyingToast(`✨ Select qty first!`); });
         });
 
-        // image fallback
-        document.querySelectorAll('.card-img').forEach(imgDiv => {
-            const bg = imgDiv.style.backgroundImage;
-            const match = bg.match(/url\(["']?(.+?)["']?\)/);
-            if(match) {
-                const testImg = new Image();
-                testImg.src = match[1];
-                testImg.onerror = () => {
-                    const card = imgDiv.closest('.cookie-card');
-                    const btn = card?.querySelector('.add-to-cart');
-                    const id = btn?.dataset.id;
-                    const found = COOKIES.find(c=>c.id===id);
-                    if(found) {
-                        imgDiv.style.background = `linear-gradient(135deg, #F7E3D2, #FBEBDC)`;
-                        imgDiv.style.display = 'flex';
-                        imgDiv.style.alignItems = 'center';
-                        imgDiv.style.justifyContent = 'center';
-                        imgDiv.innerHTML = `<div style="text-align:center;"><i class="fas ${found.fallback}" style="font-size:3rem; color:#C47E5A;"></i><div style="background:#2E241Faa; padding:2px 8px; border-radius:40px; margin-top:8px; color:white;">${found.name}</div><div class="price-badge" style="position:absolute; bottom:12px; right:12px;">🍪 ₱${found.price}</div></div>`;
-                    }
-                };
+        // Fallback image error handling for Nutella & Chocolate Chip (if images fail load)
+        const imageCards = document.querySelectorAll('.card-img');
+        imageCards.forEach(div => {
+            const bg = div.style.backgroundImage;
+            if(bg && bg !== 'none' && bg.includes('url')) {
+                const match = bg.match(/url\(["']?(.+?)["']?\)/);
+                if(match && match[1]) {
+                    const testImg = new Image();
+                    testImg.src = match[1];
+                    testImg.onerror = () => {
+                        const parentCard = div.closest('.cookie-card');
+                        const addBtn = parentCard?.querySelector('.add-to-cart');
+                        const id = addBtn?.dataset.id;
+                        const foundCookie = COOKIES.find(c=>c.id===id);
+                        if(foundCookie && foundCookie.id !== "mms") {
+                            div.style.background = `linear-gradient(135deg, #F7E3D2, #FBEBDC)`;
+                            div.style.display = 'flex';
+                            div.style.alignItems = 'center';
+                            div.style.justifyContent = 'center';
+                            div.innerHTML = `<i class="fas ${foundCookie.fallback}" style="font-size: 3.8rem; color: #C47E5A;"></i><div class="price-badge" style="position: absolute; bottom: 16px; right: 16px;">🍪 ₱${foundCookie.price}</div>`;
+                        }
+                    };
+                }
             }
         });
         syncQuantities();
     }
 
-    // ----- CURSOR + flying -----
+    // CURSOR
     const cursor = document.getElementById("cookieCursor");
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + "px";
@@ -668,7 +696,7 @@
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
 
-    // ----- PAYMENT MODAL -----
+    // PAYMENT MODAL
     let selectedPayment = "paypal";
     const modal = document.getElementById("paymentModal");
     const openModalBtn = document.getElementById("openCheckout");
@@ -711,7 +739,7 @@
             const cvc = document.getElementById("cvc")?.value.trim();
             const holder = document.getElementById("cardHolder")?.value.trim();
             if(!card || !exp || !cvc || !holder){ alert("Fill card details"); return; }
-            alert(`💳 Payment approved! Thanks ${holder}. Total: ₱${total}`);
+            alert(`💳 Card payment approved! Thanks ${holder}. Total: ₱${total}`);
         } else if(selectedPayment === "paypal") alert(`✅ PayPal success! ₱${total}`);
         else alert(`🍏 Apple Pay authorized! ₱${total}`);
         cart = [];
