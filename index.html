@@ -463,10 +463,10 @@
 </div>
 
 <script>
-    // ========== MENU DATA ==========
-    // - Nutella: uses nutellastuffedcookies-4.jpg
-    // - M&M's: photo REMOVED (now uses stylish gradient + icon)
-    // - Chocolate Chip: PHOTO REMOVED from its own, but gets the "download.jpg" assigned as requested ("add it to chocolate cookie")
+    // ========== MENU DATA with updated images ==========
+    // Nutella: nutellastuffedcookies-4.jpg
+    // M&M's: download.jpg (added as requested)
+    // Chocolate Chip: clean gradient + icon (no external photo)
     const COOKIES = [
         { 
             id: "nutella", 
@@ -482,18 +482,18 @@
             name: "M&M's Cookies", 
             price: 200, 
             desc: "Rainbow candy crunch · chewy vanilla dough, colorful magic.", 
-            img: "",  // REMOVED photo
+            img: "download.jpg",  // ADDED download.jpg for M&M's cookie
             fallback: "fa-candy-cane",
-            useImage: false
+            useImage: true
         },
         { 
             id: "chocchip", 
             name: "Chocolate Chip Cookie", 
             price: 300, 
             desc: "Classic dark chocolate chunks · golden edges, melty center.", 
-            img: "download.jpg",  // ADDED download.jpg to chocolate cookie as requested
+            img: "",  // no photo for chocolate chip (clean style)
             fallback: "fa-cookie",
-            useImage: true
+            useImage: false
         }
     ];
 
@@ -592,8 +592,8 @@
     function buildMenu() {
         const grid = document.getElementById("menuGrid");
         grid.innerHTML = COOKIES.map(cookie => {
-            // For M&M's, we remove the photo entirely and show a custom gradient card with icon.
-            if(cookie.id === "mms") {
+            // For Chocolate Chip: no photo, display stylish gradient + icon
+            if(cookie.id === "chocchip") {
                 return `
                     <div class="cookie-card">
                         <div class="card-img" style="background: linear-gradient(125deg, #FEEDDE, #FCE4D0); display: flex; align-items: center; justify-content: center; flex-direction: column;">
@@ -616,8 +616,9 @@
                         </div>
                     </div>
                 `;
-            } else {
-                // For Nutella and Chocolate Chip (now with download.jpg for choc chip)
+            } 
+            else {
+                // For Nutella and M&M's (both have images)
                 const imageUrl = cookie.img && cookie.img !== "" ? cookie.img : "";
                 const bgStyle = imageUrl ? `background-image: url('${imageUrl}'); background-size: cover; background-position: center;` : `background: linear-gradient(135deg, #F7E3D2, #FBEBDC); display: flex; align-items: center; justify-content: center;`;
                 const innerContent = imageUrl ? `<div class="price-badge">🍪 ₱${cookie.price}</div>` : `<i class="fas ${cookie.fallback}" style="font-size: 4rem; color: #D48C5B;"></i><div class="price-badge" style="position: absolute; bottom: 16px; right: 16px;">🍪 ₱${cookie.price}</div>`;
@@ -657,7 +658,7 @@
             addBtn?.addEventListener('click', () => { if(localQty>0) { addToCart(cookie.id, localQty); localQty=0; updateUI(); } else showFlyingToast(`✨ Select qty first!`); });
         });
 
-        // Fallback image error handling for Nutella & Chocolate Chip (if images fail load)
+        // Fallback image error handling for Nutella & M&Ms (if images fail to load)
         const imageCards = document.querySelectorAll('.card-img');
         imageCards.forEach(div => {
             const bg = div.style.backgroundImage;
@@ -671,7 +672,7 @@
                         const addBtn = parentCard?.querySelector('.add-to-cart');
                         const id = addBtn?.dataset.id;
                         const foundCookie = COOKIES.find(c=>c.id===id);
-                        if(foundCookie && foundCookie.id !== "mms") {
+                        if(foundCookie && (foundCookie.id === "nutella" || foundCookie.id === "mms")) {
                             div.style.background = `linear-gradient(135deg, #F7E3D2, #FBEBDC)`;
                             div.style.display = 'flex';
                             div.style.alignItems = 'center';
