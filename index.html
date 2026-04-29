@@ -106,7 +106,7 @@
             justify-content: flex-start;
             transition: all 0.2s;
         }
-        /* fallback gradient style when no image (for M&Ms) */
+        /* fallback gradient style (if needed) */
         .card-img.no-image {
             background: linear-gradient(135deg, #F9EBDC, #F7E3D2);
             display: flex;
@@ -526,8 +526,8 @@
 <script>
     // ---------- MENU: custom images 
     // Nutella uses nutellastuffedcookies-4.jpg
-    // M&Ms has NO image (clean gradient)
-    // Chocolate Chip uses download.jpg (the user's newly added image)
+    // M&Ms uses Almond-Flour-Monster-Cookies-Featured-500x500.jpg (new image as requested)
+    // Chocolate Chip uses download.jpg
     const COOKIES = [
         {
             id: "nutella",
@@ -536,7 +536,7 @@
             currency: "₱",
             description: "Decadent Nutella-filled soft cookies with a crackly top & gooey hazelnut heart. Pure bliss.",
             iconClass: "fa-chocolate-bar",
-            imgUrl: "nutellastuffedcookies-4.jpg",   // specific image as requested
+            imgUrl: "nutellastuffedcookies-4.jpg",
             hasImage: true
         },
         {
@@ -546,8 +546,8 @@
             currency: "₱",
             description: "Chewy vanilla dough packed with rainbow M&M's — crunchy candy shell meets buttery softness.",
             iconClass: "fa-candy-cane",
-            imgUrl: null,    // NO image — removed as requested
-            hasImage: false
+            imgUrl: "Almond-Flour-Monster-Cookies-Featured-500x500.jpg",  // ADDED as requested
+            hasImage: true
         },
         {
             id: "chocchip",
@@ -556,7 +556,7 @@
             currency: "₱",
             description: "Classic dark chocolate chunk cookie, golden brown with crispy edges & melting chips. A timeless favorite.",
             iconClass: "fa-cookie",
-            imgUrl: "download.jpg",   // USING download.jpg for Chocolate Chip as requested
+            imgUrl: "download.jpg",
             hasImage: true
         }
     ];
@@ -656,55 +656,27 @@
         if (!container) return;
         
         container.innerHTML = COOKIES.map(cookie => {
-            // For M&Ms (no image), we render a clean gradient card without an image
-            if (!cookie.hasImage || !cookie.imgUrl) {
-                return `
-                    <div class="cookie-card">
-                        <div class="card-img no-image">
-                            <div class="no-image-content">
-                                <i class="fas ${cookie.iconClass}"></i>
-                                <div style="font-size: 0.85rem; margin-top: 8px; color: #A2593C;">🍪 classic recipe</div>
+            // All cookies now have images, but we keep the same structure
+            return `
+                <div class="cookie-card">
+                    <div class="card-img" style="background-image: url('${cookie.imgUrl}'); background-size: cover; background-position: center;">
+                        <div class="price-badge">🍪 ${cookie.currency}${cookie.price} <span>each</span></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="cookie-name">${cookie.name}</div>
+                        <div class="cookie-price">${cookie.currency}${cookie.price}<small> / cookie</small></div>
+                        <div class="cookie-desc">${cookie.description}</div>
+                        <div class="order-qty">
+                            <div class="qty-control">
+                                <button class="qty-btn decrement" data-id="${cookie.id}">−</button>
+                                <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
+                                <button class="qty-btn increment" data-id="${cookie.id}">+</button>
                             </div>
-                            <div class="price-badge">🍪 ${cookie.currency}${cookie.price} <span>each</span></div>
-                        </div>
-                        <div class="card-content">
-                            <div class="cookie-name">${cookie.name}</div>
-                            <div class="cookie-price">${cookie.currency}${cookie.price}<small> / cookie</small></div>
-                            <div class="cookie-desc">${cookie.description}</div>
-                            <div class="order-qty">
-                                <div class="qty-control">
-                                    <button class="qty-btn decrement" data-id="${cookie.id}">−</button>
-                                    <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
-                                    <button class="qty-btn increment" data-id="${cookie.id}">+</button>
-                                </div>
-                                <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add to cart</button>
-                            </div>
+                            <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add to cart</button>
                         </div>
                     </div>
-                `;
-            } else {
-                // For cookies WITH image (Nutella and Chocolate Chip with download.jpg)
-                return `
-                    <div class="cookie-card">
-                        <div class="card-img" style="background-image: url('${cookie.imgUrl}'); background-size: cover; background-position: center;">
-                            <div class="price-badge">🍪 ${cookie.currency}${cookie.price} <span>each</span></div>
-                        </div>
-                        <div class="card-content">
-                            <div class="cookie-name">${cookie.name}</div>
-                            <div class="cookie-price">${cookie.currency}${cookie.price}<small> / cookie</small></div>
-                            <div class="cookie-desc">${cookie.description}</div>
-                            <div class="order-qty">
-                                <div class="qty-control">
-                                    <button class="qty-btn decrement" data-id="${cookie.id}">−</button>
-                                    <input type="text" class="qty-input" id="qty-val-${cookie.id}" value="0" readonly>
-                                    <button class="qty-btn increment" data-id="${cookie.id}">+</button>
-                                </div>
-                                <button class="add-to-cart" data-id="${cookie.id}"><i class="fas fa-cart-plus"></i> Add to cart</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
+                </div>
+            `;
         }).join('');
 
         // attach quantity controls for each cookie
@@ -720,8 +692,8 @@
             add?.addEventListener('click', () => { if(localQty>0) { addToCart(cookie.id, localQty); localQty=0; update(); } else showToast(`✨ Please select quantity first`); });
         });
         
-        // Handle potential image loading errors for Nutella & Chocolate Chip images (fallback to gradient + icon)
-        const imageCards = document.querySelectorAll('.card-img:not(.no-image)');
+        // Handle potential image loading errors for any cookie (fallback to gradient + icon)
+        const imageCards = document.querySelectorAll('.card-img');
         imageCards.forEach(imgDiv => {
             const bgUrl = imgDiv.style.backgroundImage;
             if (bgUrl && bgUrl !== 'none') {
