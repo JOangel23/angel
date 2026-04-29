@@ -524,7 +524,10 @@
 </div>
 
 <script>
-    // ---------- MENU: custom images - Nutella has image, M&Ms has NO image (clean gradient placeholder) ----------
+    // ---------- MENU: custom images 
+    // Nutella uses nutellastuffedcookies-4.jpg
+    // M&Ms has NO image (clean gradient)
+    // Chocolate Chip uses download.jpg (the user's newly added image)
     const COOKIES = [
         {
             id: "nutella",
@@ -553,7 +556,7 @@
             currency: "₱",
             description: "Classic dark chocolate chunk cookie, golden brown with crispy edges & melting chips. A timeless favorite.",
             iconClass: "fa-cookie",
-            imgUrl: "https://images.pexels.com/photos/7613563/pexels-photo-7613563.jpeg?auto=compress&cs=tinysrgb&w=700",
+            imgUrl: "download.jpg",   // USING download.jpg for Chocolate Chip as requested
             hasImage: true
         }
     ];
@@ -653,7 +656,7 @@
         if (!container) return;
         
         container.innerHTML = COOKIES.map(cookie => {
-            // For M&Ms (no image), we render a special clean gradient card without an image
+            // For M&Ms (no image), we render a clean gradient card without an image
             if (!cookie.hasImage || !cookie.imgUrl) {
                 return `
                     <div class="cookie-card">
@@ -680,7 +683,7 @@
                     </div>
                 `;
             } else {
-                // For cookies WITH image (Nutella and Chocolate Chip)
+                // For cookies WITH image (Nutella and Chocolate Chip with download.jpg)
                 return `
                     <div class="cookie-card">
                         <div class="card-img" style="background-image: url('${cookie.imgUrl}'); background-size: cover; background-position: center;">
@@ -717,7 +720,7 @@
             add?.addEventListener('click', () => { if(localQty>0) { addToCart(cookie.id, localQty); localQty=0; update(); } else showToast(`✨ Please select quantity first`); });
         });
         
-        // Optional: Handle potential image loading errors for Nutella & Chocolate Chip images (fallback to gradient)
+        // Handle potential image loading errors for Nutella & Chocolate Chip images (fallback to gradient + icon)
         const imageCards = document.querySelectorAll('.card-img:not(.no-image)');
         imageCards.forEach(imgDiv => {
             const bgUrl = imgDiv.style.backgroundImage;
